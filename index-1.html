@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087443">
+<title>BUSINESS MANAGEMENT</title>
+<style>
+:root{--green:#087443;--dark:#063b29;--pale:#e8f4ed;--line:#dce9e0;--red:#b42318}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#063b29,#087443,#12a66a);color:#17251e}
+button,input,select,textarea{font:inherit}
+button{border:0;border-radius:10px;padding:12px 14px;background:var(--green);color:white;font-weight:700;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+button.secondary{background:var(--pale);color:var(--green)}
+button.danger{background:#b42318}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd9d0;border-radius:9px;background:white}
+label{display:block;font-weight:700;font-size:13px;margin:12px 0 6px}
+.container{width:min(1100px,100% - 24px);margin:20px auto;background:#fff;border-radius:20px;padding:22px;box-shadow:0 18px 55px #0004}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.logo{width:54px;height:54px;border-radius:15px;background:var(--green);color:white;display:grid;place-items:center;font-size:27px}
+h1{font-size:22px;color:var(--green);margin:0}
+.subtitle{color:#64736b;font-size:13px;margin:5px 0 0}
+h2{font-size:18px;color:var(--green);margin:0 0 12px}
+h3{font-size:15px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.panel{border:1px solid var(--line);border-radius:13px;padding:16px;background:#f7fbf8;margin:12px 0}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 12px}
+.stat{background:white;border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat small{color:#68786f}
+.stat strong{display:block;font-size:22px;color:var(--green);margin-top:7px}
+.hidden{display:none!important}
+.message{margin:12px 0;line-height:1.5;overflow-wrap:anywhere;font-size:14px}
+.message.error{color:var(--red)} .message.ok{color:var(--green)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.tabs button{width:auto;margin:0}
+.tabs button.active{background:var(--dark)}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;background:white;font-size:13px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:var(--pale);color:var(--dark)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{width:auto}
+.small{font-size:12px;color:#68786f}
+footer{text-align:center;color:#718078;font-size:12px;padding:18px 0 0}
+.loginbox{max-width:460px;margin:24px auto}
+@media(max-width:600px){.container{padding:15px}.brand{align-items:flex-start}.tabs button{flex:1}.stat strong{font-size:19px}}
+</style>
+</head>
+<body>
+<main class="container">
+  <header class="brand">
+    <div class="logo">📊</div>
+    <div><h1>BUSINESS MANAGEMENT</h1><p class="subtitle">Mfumo wa kusimamia biashara zako</p></div>
+  </header>
+
+  <section id="loginSection" class="loginbox">
+    <div class="panel">
+      <h2>Ingia kwenye akaunti yako</h2>
+      <p class="small">Admin anaweza kutumia barua pepe yake. Mfanyakazi atumie jina la mtumiaji alilopewa.</p>
+      <form id="loginForm">
+        <label for="loginName">Jina la mtumiaji au barua pepe</label>
+        <input id="loginName" autocomplete="username" required placeholder="Mfano: lucas au barua pepe">
+        <label for="loginPassword">Nenosiri</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Ingiza nenosiri">
+        <button id="loginButton" type="submit" style="width:100%;margin-top:16px">INGIA</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="appSection" class="hidden">
+    <div class="panel">
+      <div class="actions" style="justify-content:space-between;align-items:center">
+        <div><h2 id="welcome">Karibu</h2><div id="accountInfo" class="small"></div></div>
+        <button id="logoutButton" class="secondary" type="button">Toka</button>
+      </div>
+    </div>
+
+    <div id="ownerApp" class="hidden">
+      <div class="grid">
+        <div class="stat"><small>Jumla ya mapato</small><strong id="incomeTotal">TSh 0</strong></div>
+        <div class="stat"><small>Jumla ya matumizi</small><strong id="expenseTotal">TSh 0</strong></div>
+        <div class="stat"><small>Salio (mapato - matumizi)</small><strong id="balanceTotal">TSh 0</strong></div>
+        <div class="stat"><small>Rekodi zote</small><strong id="recordCount">0</strong></div>
+      </div>
+      <nav class="tabs">
+        <button class="active" data-tab="recordsTab">Mapato, matumizi na kazi</button>
+        <button data-tab="employeesTab">Akaunti za wafanyakazi</button>
+      </nav>
+
+      <section id="recordsTab">
+        <div class="panel">
+          <h2>Rekodi ya biashara</h2>
+          <form id="recordForm">
+            <div class="formgrid">
+              <div><label for="recordBusiness">Biashara</label><select id="recordBusiness" required>
+                <option>Usafirishaji wa Mizigo</option><option>Mashine ya Kusaga</option><option>Biashara ya Trekta</option>
+              </select></div>
+              <div><label for="recordType">Aina ya rekodi</label><select id="recordType" required>
+                <option value="income">Mapato</option><option value="expense">Matumizi</option><option value="job">Kazi / safari</option>
+              </select></div>
+              <div><label for="recordAmount">Kiasi (TSh)</label><input id="recordAmount" type="number" min="0" step="1" value="0" required></div>
+              <div><label for="recordDate">Tarehe</label><input id="recordDate" type="date" required></div>
+            </div>
+            <label for="recordDescription">Maelezo ya kazi au malipo</label><textarea id="recordDescription" rows="2" maxlength="1000" placeholder="Mfano: Safari ya mizigo, mafuta, kazi ya kusaga..."></textarea>
+            <button id="saveRecordButton" type="submit">HIFADHI REKODI</button>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="actions" style="justify-content:space-between;align-items:center"><h2>Rekodi za biashara</h2><button id="refreshRecords" class="secondary" type="button">Sasisha</button></div>
+          <div class="tablewrap"><table><thead><tr><th>Tarehe</th><th>Biashara</th><th>Aina</th><th>Kiasi</th><th>Maelezo</th><th>Aliyeingiza</th></tr></thead><tbody id="recordsBody"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="employeesTab" class="hidden">
+        <div class="panel">
+          <h2>Fungua akaunti ya mfanyakazi</h2>
+          <p class="small">Jina la mtumiaji liwe la kipekee. Nenosiri litumwe kwa mfanyakazi kwa njia salama.</p>
+          <form id="employeeForm">
+            <div class="formgrid">
+              <div><label for="employeeName">Jina kamili</label><input id="employeeName" required maxlength="100"></div>
+              <div><label for="employeeUsername">Jina la mtumiaji</label><input id="employeeUsername" required minlength="3" maxlength="30" pattern="[A-Za-z0-9._-]+" placeholder="mfano: juma01"></div>
+              <div><label for="employeePassword">Nenosiri la mwanzo</label><input id="employeePassword" type="password" required minlength="8" autocomplete="new-password"></div>
+              <div><label for="employeeBusiness">Biashara anayosimamia</label><select id="employeeBusiness" required>
+                <option>Usafirishaji wa Mizigo</option><option>Mashine ya Kusaga</option><option>Biashara ya Trekta</option>
+              </select></div>
+              <div><label for="employeePhone">Namba ya simu (hiari)</label><input id="employeePhone" inputmode="tel" maxlength="30"></div>
+            </div>
+            <button id="createEmployeeButton" type="submit">TENGENEZA AKAUNTI</button>
+          </form>
+        </div>
+        <div class="panel">
+          <h2>Wafanyakazi</h2>
+          <div class="tablewrap"><table><thead><tr><th>Jina</th><th>Jina la mtumiaji</th><th>Biashara</th><th>Hali</th></tr></thead><tbody id="employeesBody"></tbody></table></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="employeeApp" class="hidden">
+      <div class="grid">
+        <div class="stat"><small>Mapato uliyoingiza</small><strong id="myIncome">TSh 0</strong></div>
+        <div class="stat"><small>Matumizi uliyoingiza</small><strong id="myExpense">TSh 0</strong></div>
+      </div>
+      <div class="panel">
+        <h2>Rekodi ya kazi / mapato / matumizi</h2>
+        <form id="employeeRecordForm">
+          <div class="formgrid">
+            <div><label for="employeeRecordBusiness">Biashara</label><select id="employeeRecordBusiness" required></select></div>
+            <div><label for="employeeRecordType">Aina</label><select id="employeeRecordType" required><option value="income">Mapato</option><option value="expense">Matumizi</option><option value="job">Kazi / safari</option></select></div>
+            <div><label for="employeeRecordAmount">Kiasi (TSh)</label><input id="employeeRecordAmount" type="number" min="0" step="1" value="0" required></div>
+            <div><label for="employeeRecordDate">Tarehe</label><input id="employeeRecordDate" type="date" required></div>
+          </div>
+          <label for="employeeRecordDescription">Maelezo</label><textarea id="employeeRecordDescription" rows="2" maxlength="1000"></textarea>
+          <button id="employeeSaveButton" type="submit">HIFADHI REKODI</button>
+        </form>
+      </div>
+      <div class="panel"><h2>Rekodi nilizoingiza</h2><div class="tablewrap"><table><thead><tr><th>Tarehe</th><th>Biashara</th><th>Aina</th><th>Kiasi</th><th>Maelezo</th></tr></thead><tbody id="myRecordsBody"></tbody></table></div></div>
+    </div>
+  </section>
+  <div id="message" class="message" role="status" aria-live="polite"></div>
+  <footer>BUSINESS MANAGEMENT © 2026</footer>
+</main>
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+const SUPABASE_URL = "https://sbsfnclnitklnkkzxipl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Rlrq9M1_4OhvdXyTVAIYjw_5R88K4u6";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+const BUSINESSES = ["Usafirishaji wa Mizigo","Mashine ya Kusaga","Biashara ya Trekta"];
+let currentUser = null, currentProfile = null, myBusinesses = [];
+function tell(text, type="error"){const el=$("message");el.textContent=text;el.className="message "+(type==="ok"?"ok":"error")}
+function money(n){return "TSh "+Number(n||0).toLocaleString("en-US")}
+function safeText(value){return String(value??"")}
+function typeLabel(t){return t==="income"?"Mapato":t==="expense"?"Matumizi":"Kazi / safari"}
+function swDate(v){return v?new Date(v+"T00:00:00").toLocaleDateString("sw-TZ"):"—"}
+function setToday(){const d=new Date().toISOString().slice(0,10);["recordDate","employeeRecordDate"].forEach(id=>{if($(id))$(id).value=d})}
+function showLoggedOut(){ $("loginSection").classList.remove("hidden");$("appSection").classList.add("hidden");$("ownerApp").classList.add("hidden");$("employeeApp").classList.add("hidden");}
+async function getProfile(user){
+  const {data,error}=await supabase.from("user_profiles").select("user_id,full_name,role,active,phone").eq("user_id",user.id).maybeSingle();
+  if(error) throw new Error("Imeshindikana kusoma wasifu: "+error.message);
+  if(!data) throw new Error("Akaunti haina wasifu kwenye user_profiles. Admin akague usajili.");
+  if(data.active===false) throw new Error("Akaunti hii imesimamishwa. Wasiliana na Admin.");
+  if(!["owner","employee"].includes(String(data.role||"").toLowerCase())) throw new Error("Akaunti haina ruhusa inayotambulika.");
+  return data;
+}
+async function enterApp(session){
+  currentUser=session.user;
+  try{currentProfile=await getProfile(currentUser)}catch(e){tell(e.message);await supabase.auth.signOut();showLoggedOut();return}
+  $("welcome").textContent="Karibu, "+(currentProfile.full_name||"Mtumiaji");
+  $("accountInfo").textContent=(currentProfile.role==="owner"?"Admin / Mmiliki":"Mfanyakazi")+" · "+(currentUser.email||"");
+  $("loginSection").classList.add("hidden");$("appSection").classList.remove("hidden");
+  const owner=currentProfile.role==="owner";
+  $("ownerApp").classList.toggle("hidden",!owner);$("employeeApp").classList.toggle("hidden",owner);
+  setToday();
+  if(owner){await loadOwnerRecords();await loadEmployees()}
+  else {await loadMyAssignments();await loadMyRecords()}
+}
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();$("loginButton").disabled=true;tell("Inaingia kwenye mfumo...","ok");
+  let login=$("loginName").value.trim(), password=$("loginPassword").value;
+  if(!login.includes("@")) login=login.toLowerCase()+"@bm.invalid";
+  try{const {data,error}=await supabase.auth.signInWithPassword({email:login,password});if(error)throw error;await enterApp(data.session)}
+  catch(err){tell("Imeshindikana kuingia: "+(err.message||"Kagua jina la mtumiaji na nenosiri."))}
+  finally{$("loginButton").disabled=false}
+});
+$("logoutButton").addEventListener("click",async()=>{const {error}=await supabase.auth.signOut();if(error){tell(error.message);return}currentUser=null;currentProfile=null;showLoggedOut();$("loginForm").reset();tell("Umetoka kwenye akaunti.","ok")});
+
+function addCell(row,text){const td=document.createElement("td");td.textContent=safeText(text);row.appendChild(td);return td}
+function renderRecords(bodyId,records,includeCreator){
+  const body=$(bodyId);body.replaceChildren();
+  if(!records?.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=includeCreator?6:5;td.textContent="Bado hakuna rekodi.";tr.appendChild(td);body.appendChild(tr);return}
+  records.forEach(r=>{const tr=document.createElement("tr");addCell(tr,swDate(r.record_date));addCell(tr,r.business_name);addCell(tr,typeLabel(r.record_type));addCell(tr,money(r.amount));addCell(tr,r.description||"—");if(includeCreator)addCell(tr,r.created_by_name||r.created_by);body.appendChild(tr)})
+}
+async function loadOwnerRecords(){
+  const {data,error}=await supabase.from("bm_records").select("*").order("record_date",{ascending:false}).limit(500);
+  if(error){tell("Kushindwa kusoma rekodi: "+error.message);return}
+  const records=data||[];renderRecords("recordsBody",records,true);
+  const income=records.filter(r=>r.record_type==="income").reduce((s,r)=>s+Number(r.amount||0),0);
+  const expense=records.filter(r=>r.record_type==="expense").reduce((s,r)=>s+Number(r.amount||0),0);
+  $("incomeTotal").textContent=money(income);$("expenseTotal").textContent=money(expense);$("balanceTotal").textContent=money(income-expense);$("recordCount").textContent=records.length;
+}
+async function loadMyAssignments(){
+  const {data,error}=await supabase.from("bm_staff_businesses").select("business_name").eq("user_id",currentUser.id);
+  if(error){tell("Kushindwa kusoma biashara ulizopangiwa: "+error.message);myBusinesses=[]}else myBusinesses=(data||[]).map(x=>x.business_name);
+  if(!myBusinesses.length)myBusinesses=BUSINESSES;
+  const select=$("employeeRecordBusiness");select.replaceChildren();
+  myBusinesses.forEach(name=>{const op=document.createElement("option");op.value=name;op.textContent=name;select.appendChild(op)});
+}
+async function loadMyRecords(){
+  const {data,error}=await supabase.from("bm_records").select("*").order("record_date",{ascending:false}).limit(300);
+  if(error){tell("Kushindwa kusoma rekodi zako: "+error.message);return}
+  const records=data||[];renderRecords("myRecordsBody",records,false);
+  $("myIncome").textContent=money(records.filter(r=>r.record_type==="income").reduce((s,r)=>s+Number(r.amount||0),0));
+  $("myExpense").textContent=money(records.filter(r=>r.record_type==="expense").reduce((s,r)=>s+Number(r.amount||0),0));
+}
+async function saveRecord(formPrefix,buttonId){
+  const isOwner=formPrefix==="record";const business=$(formPrefix+"Business").value;
+  const type=$(formPrefix+"Type").value;const amount=Number($(formPrefix+"Amount").value||0);
+  const date=$(formPrefix+"Date").value;const description=$(formPrefix+"Description").value.trim();
+  if(!date||amount<0){tell("Kagua tarehe na kiasi.");return}
+  if(!isOwner&&!myBusinesses.includes(business)){tell("Hujaruhusiwa kurekodi kwa biashara hii.");return}
+  $(buttonId).disabled=true;
+  try{
+    const {error}=await supabase.from("bm_records").insert({business_name:business,record_type:type,amount,record_date:date,description,created_by:currentUser.id,created_by_name:currentProfile.full_name||currentUser.email});
+    if(error)throw error;
+    tell("Rekodi imehifadhiwa.","ok");
+    $(isOwner?"recordForm":"employeeRecordForm").reset();setToday();
+    if(isOwner)await loadOwnerRecords();else await loadMyRecords();
+  }catch(e){tell("Imeshindikana kuhifadhi rekodi: "+e.message)}
+  finally{$(buttonId).disabled=false}
+}
+$("recordForm").addEventListener("submit",e=>{e.preventDefault();saveRecord("record","saveRecordButton")});
+$("employeeRecordForm").addEventListener("submit",e=>{e.preventDefault();saveRecord("employeeRecord","employeeSaveButton")});
+$("refreshRecords").addEventListener("click",loadOwnerRecords);
+
+async function loadEmployees(){
+  const {data,error}=await supabase.from("user_profiles").select("user_id,full_name,role,active,phone").eq("role","employee").order("created_at",{ascending:false});
+  if(error){tell("Kushindwa kusoma orodha ya wafanyakazi: "+error.message);return}
+  const body=$("employeesBody");body.replaceChildren();
+  if(!data?.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=4;td.textContent="Bado hakuna wafanyakazi.";tr.appendChild(td);body.appendChild(tr);return}
+  for(const emp of data){
+    const tr=document.createElement("tr");addCell(tr,emp.full_name||"—");
+    let username="—";let business="—";
+    const {data:assignment}=await supabase.from("bm_staff_businesses").select("username,business_name").eq("user_id",emp.user_id).maybeSingle();
+    if(assignment){username=assignment.username||"—";business=assignment.business_name||"—"}
+    addCell(tr,username);addCell(tr,business);addCell(tr,emp.active===false?"Imesimamishwa":"Hai");body.appendChild(tr);
+  }
+}
+$("employeeForm").addEventListener("submit",async e=>{
+  e.preventDefault();$("createEmployeeButton").disabled=true;tell("Inatengeneza akaunti salama...","ok");
+  const payload={full_name:$("employeeName").value.trim(),username:$("employeeUsername").value.trim().toLowerCase(),password:$("employeePassword").value,business_name:$("employeeBusiness").value,phone:$("employeePhone").value.trim()};
+  try{
+    const {data:{session}}=await supabase.auth.getSession();if(!session)throw new Error("Ingia tena kama Admin.");
+    const response=await fetch(SUPABASE_URL+"/functions/v1/create-employee",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token,"apikey":SUPABASE_KEY},body:JSON.stringify(payload)});
+    const result=await response.json();if(!response.ok)throw new Error(result.error||"Imeshindikana kutengeneza akaunti.");
+    tell("Akaunti imetengenezwa. Jina la mtumiaji: "+payload.username+". Mpe mfanyakazi jina hili na nenosiri kwa njia salama.","ok");
+    $("employeeForm").reset();await loadEmployees();
+  }catch(err){tell(err.message||"Hitilafu ya kutengeneza akaunti.")}
+  finally{$("createEmployeeButton").disabled=false}
+});
+document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b===btn));
+  ["recordsTab","employeesTab"].forEach(id=>$(id).classList.toggle("hidden",id!==btn.dataset.tab));
+}));
+async function restore(){const {data,error}=await supabase.auth.getSession();if(error){tell(error.message);return}if(data.session)await enterApp(data.session)}
+restore();
+</script>
+</body>
+</html>
