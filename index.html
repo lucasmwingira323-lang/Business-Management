@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087443">
+<title>BUSINESS MANAGEMENT</title>
+
+<style>
+:root {
+  --green:#087443;
+  --dark:#064d30;
+  --light:#eaf7ef;
+  --white:#ffffff;
+  --red:#c62828;
+  --text:#18352a;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f2f7f4;
+  color:var(--text);
+}
+header {
+  background:linear-gradient(135deg,var(--dark),#0a9858);
+  color:white;
+  padding:22px 16px;
+  text-align:center;
+}
+header h1 { margin:0 0 8px; font-size:23px; }
+header p { margin:0; font-size:14px; }
+main {
+  width:100%;
+  max-width:1000px;
+  margin:22px auto;
+  padding:0 14px 35px;
+}
+.card {
+  background:white;
+  border-radius:14px;
+  padding:19px;
+  margin-bottom:16px;
+  box-shadow:0 3px 15px #173d2910;
+}
+h2 { margin-top:0; font-size:20px; }
+h3 { font-size:17px; }
+label {
+  display:block;
+  font-weight:bold;
+  margin:13px 0 7px;
+}
+input,select,textarea {
+  display:block;
+  width:100%;
+  padding:13px;
+  border:1px solid #ccd9d0;
+  border-radius:8px;
+  background:white;
+  font-size:16px;
+}
+button {
+  border:0;
+  border-radius:9px;
+  padding:13px 16px;
+  background:var(--green);
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+}
+button:disabled { opacity:.6; }
+.primary { width:100%; margin-top:18px; }
+.secondary { background:#e4f2e9; color:var(--dark); }
+.danger { background:var(--red); }
+.hidden { display:none !important; }
+.message {
+  padding:12px;
+  border-radius:8px;
+  margin-top:12px;
+  overflow-wrap:anywhere;
+  background:#edf4ef;
+  font-size:14px;
+}
+.error { color:#a51d1d; background:#fff0f0; }
+.success { color:#075c32; background:#e4f8e9; }
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+nav button { flex:1; min-width:115px; }
+.stats {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(135px,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+.stat {
+  padding:16px;
+  background:var(--light);
+  border-radius:12px;
+}
+.stat strong { display:block; font-size:23px; margin-top:8px; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; min-width:400px; }
+th,td {
+  padding:11px;
+  border-bottom:1px solid #e2eae4;
+  text-align:left;
+  font-size:14px;
+}
+th { background:#edf6ef; }
+.small { color:#63756a; font-size:13px; line-height:1.6; }
+footer { text-align:center; color:#64766a; padding:20px; font-size:13px; }
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🏢 BUSINESS MANAGEMENT</h1>
+  <p>Simamia biashara zako kwa urahisi</p>
+</header>
+
+<main>
+  <section id="loginSection" class="card">
+    <h2>🔐 Ingia kwenye akaunti yako</h2>
+    <p class="small">
+      Tumia barua pepe na nenosiri la akaunti yako iliyosajiliwa kwenye mfumo.
+    </p>
+
+    <form id="loginForm">
+      <label for="email">Barua pepe</label>
+      <input id="email" type="email" autocomplete="username"
+             placeholder="Ingiza barua pepe" required>
+
+      <label for="password">Nenosiri</label>
+      <input id="password" type="password" autocomplete="current-password"
+             placeholder="Ingiza nenosiri" required>
+
+      <button id="loginButton" class="primary" type="submit">INGIA</button>
+    </form>
+
+    <button id="resetButton" class="secondary primary" type="button">
+      Omba kubadilisha nenosiri
+    </button>
+
+    <div id="loginMessage" class="message hidden" role="status"></div>
+  </section>
+
+  <section id="appSection" class="hidden">
+    <div class="card">
+      <h2 id="welcome">Karibu</h2>
+      <p id="accountInfo" class="small"></p>
+      <button id="logoutButton" class="danger" type="button">Toka kwenye akaunti</button>
+    </div>
+
+    <nav>
+      <button type="button" data-page="homePage">Dashboard</button>
+      <button type="button" data-page="businessPage">Biashara</button>
+      <button type="button" data-page="transactionsPage">Miamala</button>
+      <button type="button" data-page="employeesPage">Wafanyakazi</button>
+    </nav>
+
+    <section id="homePage" class="page">
+      <div class="stats">
+        <div class="stat">
+          Biashara
+          <strong id="businessCount">—</strong>
+        </div>
+        <div class="stat">
+          Miamala
+          <strong id="transactionCount">—</strong>
+        </div>
+        <div class="stat">
+          Wafanyakazi
+          <strong id="employeeCount">—</strong>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📊 Dashboard</h2>
+        <p>Hapa unaweza kufuatilia taarifa zinazopatikana kwenye database yako.</p>
+        <button id="refreshButton" type="button">🔄 Sasisha taarifa</button>
+        <div id="dashboardMessage" class="message">
+          Subiri taarifa zipakiwe.
+        </div>
+      </div>
+    </section>
+
+    <section id="businessPage" class="page hidden">
+      <div class="card">
+        <h2>🏢 Biashara zangu</h2>
+        <div id="businessMessage" class="message">Inapakia biashara...</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Jina / taarifa</th><th>Maelezo</th></tr></thead>
+            <tbody id="businessBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="transactionsPage" class="page hidden">
+      <div class="card">
+        <h2>💰 Miamala</h2>
+        <p class="small">
+          Rekodi zitaonekana kulingana na ruhusa za akaunti yako kwenye Supabase.
+        </p>
+        <div id="transactionMessage" class="message">Inapakia miamala...</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Taarifa za muamala</th><th>Maelezo</th></tr></thead>
+            <tbody id="transactionBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="employeesPage" class="page hidden">
+      <div class="card">
+        <h2>👥 Wafanyakazi</h2>
+        <div id="employeeMessage" class="message">Inapakia wafanyakazi...</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Jina / taarifa</th><th>Maelezo</th></tr></thead>
+            <tbody id="employeeBody"></tbody>
+          </table>
+        </div>
+        <p class="small">
+          Kuongeza akaunti mpya za wafanyakazi kunahitaji usanidi salama wa
+          Supabase Auth na ruhusa za database. Ukurasa huu hautengenezi akaunti
+          mpya moja kwa moja.
+        </p>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>BUSINESS MANAGEMENT © 2026</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+
+/*
+  Tumia taarifa za Supabase project yako.
+  Usitumie service_role key kwenye faili la tovuti.
+*/
+const SUPABASE_URL = "https://sbsfnclnitklnkkzxipl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Rlrq9M1_4OhvdXyTVAIYjw_5R88K4u6";
+
+const OWNER_EMAIL = "lucasmwingira323@gmail.com";
+
+let supabaseClient = null;
+let currentUser = null;
+let currentProfile = null;
+
+const $ = id => document.getElementById(id);
+
+function showMessage(id, message, type = "") {
+  const element = $(id);
+  if (!element) return;
+  element.textContent = message;
+  element.className = "message" + (type ? " " + type : "");
+  element.classList.remove("hidden");
+}
+
+function safeText(value) {
+  if (value === null || value === undefined || value === "") return "—";
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+}
+
+function addRow(tableBody, first, second) {
+  const row = document.createElement("tr");
+  const cell1 = document.createElement("td");
+  const cell2 = document.createElement("td");
+  cell1.textContent = safeText(first);
+  cell2.textContent = safeText(second);
+  row.append(cell1, cell2);
+  tableBody.appendChild(row);
+}
+
+function displayRows(bodyId, data, messageId, labelFields) {
+  const body = $(bodyId);
+  body.replaceChildren();
+
+  if (!data || data.length === 0) {
+    showMessage(messageId, "Hakuna taarifa zinazoonekana kwa sasa.");
+    return;
+  }
+
+  data.forEach(item => {
+    const keys = Object.keys(item || {});
+    const firstKey = labelFields.find(key => item[key] !== undefined) || keys[0];
+    const secondKey = keys.find(key => key !== firstKey) || firstKey;
+
+    addRow(body, item[firstKey], item[secondKey]);
+  });
+
+  showMessage(messageId, "Taarifa zimepakiwa: " + data.length, "success");
+}
+
+async function connectSupabase() {
+  if (supabaseClient) return supabaseClient;
+
+  if (!window.supabase || !window.supabase.createClient) {
+    throw new Error(
+      "Maktaba ya Supabase haijapakiwa. Hakikisha intaneti ipo na jaribu tena."
+    );
+  }
+
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+  return supabaseClient;
+}
+
+async function getProfile(user) {
+  const { data, error } = await supabaseClient
+    .from("user_profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("Profile haijasomwa:", error.message);
+    return null;
+  }
+
+  return data;
+}
+
+function isOwner() {
+  const role = String(currentProfile?.role || "").toLowerCase();
+  return role === "owner" ||
+    String(currentUser?.email || "").toLowerCase() === OWNER_EMAIL.toLowerCase();
+}
+
+async function enterApp(user) {
+  currentUser = user;
+  currentProfile = await getProfile(user);
+
+  $("loginSection").classList.add("hidden");
+  $("appSection").classList.remove("hidden");
+
+  const name = currentProfile?.full_name || user.email || "Mtumiaji";
+  $("welcome").textContent = "Karibu, " + name;
+  $("accountInfo").textContent =
+    "Akaunti: " + (user.email || "—") +
+    " | Aina: " + (isOwner() ? "Mmiliki" : "Mtumiaji");
+
+  await refreshData();
+}
+
+async function loadTable(tableName, bodyId, messageId, labelFields) {
+  const { data, error } = await supabaseClient
+    .from(tableName)
+    .select("*")
+    .limit(100);
+
+  if (error) {
+    showMessage(
+      messageId,
+      "Imeshindikana kusoma jedwali " + tableName + ": " + error.message,
+      "error"
+    );
+    $(bodyId).replaceChildren();
+    return null;
+  }
+
+  displayRows(bodyId, data, messageId, labelFields);
+  return data;
+}
+
+async function refreshData() {
+  if (!supabaseClient || !currentUser) return;
+
+  showMessage("dashboardMessage", "Inapakia taarifa...");
+
+  const [businesses, transactions, employees] = await Promise.all([
+    loadTable("businesses", "businessBody", "businessMessage",
+      ["name", "business_name", "title", "id"]),
+    loadTable("transactions", "transactionBody", "transactionMessage",
+      ["description", "type", "amount", "id"]),
+    loadTable("employees", "employeeBody", "employeeMessage",
+      ["full_name", "name", "phone", "id"])
+  ]);
+
+  $("businessCount").textContent =
+    businesses === null ? "—" : businesses.length;
+
+  $("transactionCount").textContent =
+    transactions === null ? "—" : transactions.length;
+
+  $("employeeCount").textContent =
+    employees === null ? "—" : employees.length;
+
+  const errors = [];
+  if (businesses === null) errors.push("biashara");
+  if (transactions === null) errors.push("miamala");
+  if (employees === null) errors.push("wafanyakazi");
+
+  if (errors.length) {
+    showMessage(
+      "dashboardMessage",
+      "Umeingia, lakini baadhi ya taarifa hazijapakiwa: " +
+        errors.join(", ") +
+        ". Angalia majina ya majedwali na ruhusa za RLS kwenye Supabase.",
+      "error"
+    );
+  } else {
+    showMessage(
+      "dashboardMessage",
+      "Taarifa zimepakiwa. Jumla ya biashara: " +
+        businesses.length + ".",
+      "success"
+    );
+  }
+}
+
+$("loginForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const button = $("loginButton");
+  button.disabled = true;
+  button.textContent = "INAINGIA...";
+
+  try {
+    await connectSupabase();
+
+    const email = $("email").value.trim();
+    const password = $("password").value;
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+    if (!data.user) throw new Error("Mtumiaji hakupatikana.");
+
+    await enterApp(data.user);
+  } catch (error) {
+    showMessage(
+      "loginMessage",
+      "Imeshindikana kuingia: " +
+        (error.message || "Hitilafu isiyojulikana."),
+      "error"
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "INGIA";
+  }
+});
+
+$("resetButton").addEventListener("click", async function() {
+  const email = $("email").value.trim();
+
+  if (!email) {
+    showMessage(
+      "loginMessage",
+      "Andika barua pepe yako kwanza, kisha bonyeza tena kubadilisha nenosiri.",
+      "error"
+    );
+    $("email").focus();
+    return;
+  }
+
+  try {
+    await connectSupabase();
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if (error) throw error;
+
+    showMessage(
+      "loginMessage",
+      "Ombi limetumwa ikiwa huduma ya barua pepe imewezeshwa. Angalia inbox na spam.",
+      "success"
+    );
+  } catch (error) {
+    showMessage(
+      "loginMessage",
+      "Imeshindikana kutuma ombi: " + error.message,
+      "error"
+    );
+  }
+});
+
+$("logoutButton").addEventListener("click", async function() {
+  try {
+    if (supabaseClient) {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) throw error;
+    }
+  } catch (error) {
+    alert("Hitilafu wakati wa kutoka: " + error.message);
+  }
+
+  currentUser = null;
+  currentProfile = null;
+  $("appSection").classList.add("hidden");
+  $("loginSection").classList.remove("hidden");
+  $("password").value = "";
+});
+
+$("refreshButton").addEventListener("click", refreshData);
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", function() {
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.add("hidden");
+    });
+
+    const page = $(this.dataset.page);
+    if (page) page.classList.remove("hidden");
+  });
+});
+
+async function restoreSession() {
+  try {
+    await connectSupabase();
+
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+
+    if (data.session?.user) {
+      await enterApp(data.session.user);
+    }
+  } catch (error) {
+    showMessage(
+      "loginMessage",
+      "Ukurasa umefunguka, lakini muunganisho una tatizo: " +
+        error.message,
+      "error"
+    );
+  }
+}
+
+restoreSession();
+</script>
+</body>
+</html>
